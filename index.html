@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+    <script src="./js/jquery-1.7.2.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <button onclick="doPrint()" class="btn">打印</button>
+      <ul class="hint">
+        <li>1、布局设为横向</li>
+        <li>2、边距设为无</li>
+      </ul>
+      <div class="home">
+        <img src="./img/1.png" />
+        <div class="home-box">
+          <!--<div class="group">
+          <div class="item">
+              <div class="item-info">
+                <img src="" />
+                <div class="item-input-row">
+                  <div class="label">姓名</div>
+                  <div class="value">{{ item.name }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">部门</div>
+                  <div class="value">{{ item.department }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">职位</div>
+                  <div class="value">{{ item.post }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">编号</div>
+                  <div class="value">{{ item.number }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="item"></div> 
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    window.onload = () => {
+      var group = document.querySelector("group");
+    };
+    function doPrint() {
+      var newHtml = document.querySelector(".home").innerHTML;
+      window.document.body.innerHTML = newHtml;
+      window.print();
+      window.location.reload();
+    }
+  </script>
+</html>
