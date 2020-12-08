@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/theme/default/all.css">
+    <link rel="stylesheet" href="./css/electronic.css" />
+    <script src="/js/all.js"></script>
+    <script src="/js/shopCommon/FormElement.js"></script>
+    <script src="./js/html2Canvas.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <button class="btn" onclick="downloadBadge()">下载电子工牌</button>
+      <div id="home">
+        <img src="./img/badge-bg.png" />
+        <div class="home-box" id="home-box">
+          <div class="item-info">
+            <img
+              src="https://image.996110.com/images-202011-c4bb8a6419fdf4d7cdead9a48c3e3349-46770.png!quality"
+            />
+            <div class="item-input-row">
+              <div class="label">姓名</div>
+              <div class="value">xxxx</div>
+            </div>
+            <div class="item-input-row">
+              <div class="label">部门</div>
+              <div class="value">2</div>
+            </div>
+            <div class="item-input-row">
+              <div class="label">职位</div>
+              <div class="value">3</div>
+            </div>
+            <div class="item-input-row">
+              <div class="label">编号</div>
+              <div class="value">4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  // 生成电子工牌截图
+  function downloadBadge() {
+    html2canvas(document.querySelector("#home"), {
+      allowTaint: true,
+      useCORS: true
+    }).then((canvas) => {
+      var alink = document.createElement("a");
+      alink.href = canvas.toDataURL();
+      alink.download = '电子名片.png';
+      alink.click();
+    });
+  }
+</script>

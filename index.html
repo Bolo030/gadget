@@ -4,19 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/index.css" />
-    <script src="./js/jquery-1.7.2.min.js"></script>
+    <link rel="stylesheet" href="/theme/default/all.css">
+<!--    <link rel="stylesheet" href="/theme/zui/css/min.css">-->
+    <script src="/js/all.js"></script>
+    <script src="/js/shopCommon/FormElement.js"></script>
+    <link rel="stylesheet" href="./css/index.css?v=1.0" />
+<!--    <script src="./js/jquery-1.7.2.min.js"></script>-->
   </head>
   <body>
-    <div class="container">
-      <button onclick="doPrint()" class="btn">打印</button>
+    <div>
+      <div class="px-40">
+        <table class="table table-form w-600px">
+          <tr>
+            <th class="w-80px">员工账号</th>
+            <td>
+              <select name="admin" id="admin" class="form-control chosen" multiple>
+              </select>
+            </td>
+            <th>
+              <div class="btn-group">
+                <button onclick="sure()" class="btn btn-primary">确定</button>
+                <button onclick="doPrint()" class="btn">打印</button>
+              </div>
+            </th>
+          </tr>
+        </table>
+      </div>
       <ul class="hint">
-        <li>1、布局设为横向</li>
-        <li>2、边距设为无</li>
+        <li>1、页码设为 1</li>
+        <li>2、布局设为横向</li>
+        <li>3、边距设为无</li>
       </ul>
       <div class="home">
         <img src="./img/1.png" />
-        <div class="home-box">
+        <div class="home-box" id="home-box">
           <!--<div class="group">
           <div class="item">
               <div class="item-info">
@@ -45,15 +66,58 @@
       </div>
     </div>
   </body>
-  <script type="text/javascript">
-    window.onload = () => {
-      var group = document.querySelector("group");
-    };
-    function doPrint() {
-      var newHtml = document.querySelector(".home").innerHTML;
-      window.document.body.innerHTML = newHtml;
-      window.print();
-      window.location.reload();
-    }
-  </script>
 </html>
+<script type="text/javascript">
+  var v = {
+    currentUser: {
+      backtoken: ''
+    }
+  };
+  var formElement = new FormElement();
+  window.onload = () => {
+    var group = document.querySelector("group");
+  };
+  function doPrint() {
+    var newHtml = document.querySelector(".home").innerHTML;
+    window.document.body.innerHTML = newHtml;
+    window.print();
+    window.location.reload();
+  }
+  function init() {
+    formElement.get('/backstage/admin/select').then((res) => {
+      if (res.status === 1) {
+        $('#admin').html(res.data.html);
+        $('#admin').trigger('chosen:updated');
+      } else {
+        formElement.danger('获取员工账号失败');
+      }
+    });
+  }
+  function sure() {
+    let admin = $('#admin').val();
+    if (formElement.isEmpty(admin)) {
+      formElement.danger('请选择员工');
+      return false;
+    }
+    if (admin.length > 5) {
+      formElement.danger('最多只能选择4位员工');
+      return false;
+    }
+    formElement.get('/backstage/admin/badge', {accounts: admin, html: 1}).then((res) => {
+      if (res.status === 1) {
+        $('#home-box').html(res.data.html);
+      } else {
+        formElement.danger(res.message);
+      }
+    });
+  }
+  $(document).ready(function () {
+    init();
+    $('#admin').change(function () {
+      let val = $(this).val();
+      if (val.length > 5) {
+        formElement.danger('最多只能选择4位员工');
+      }
+    });
+  });
+</script>
