@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>餐票</title>
-    <script src="./js/jquery-1.7.2.min.js"></script>
+    <script src="./jquery-1.7.2.min.js"></script>
 </head>
 <style>
     html,body{
@@ -15,7 +15,7 @@
 .a4-endwise{
       margin: 0 auto;
       width: 1070px;
-      height: 100vh;
+      height: 1511px;
       border: 1px #ccc solid;
       overflow: hidden;
       padding: 0;
@@ -50,7 +50,7 @@
 }
 .item{
   width: 50%;
-  height: 16.6%;
+  height: 16.66666%;
   position: relative;
 }
 .item img{
@@ -60,6 +60,7 @@
     left: 0;
     top: 0;
     z-index: 1;
+    display: block;
 }
 .item-text{
     position: absolute;
@@ -108,20 +109,21 @@ input{
                }else{
                 num='NO.00000'
                }
-               $('.container').eq(pageIdx).append(`
-               <div class="item">
-                <img src="./img/img.png" alt="bg">
-                <div class="item-text">
-                    ${num+(i)}
-                    </div>
-                </div>`)
-              if((i-start)>=12&&(i-start)%12==0){
+               if((i-start)>=12&&(i-start)%12==0){
                 $('.container').eq(pageIdx).after(`
                 <div class="container a4-endwise" id="test">
                 </div>
                 `)
                 pageIdx++
               }
+               $('.container').eq(pageIdx).append(`
+               <div class="item">
+                <img src="./img.png" alt="bg">
+                <div class="item-text">
+                    ${num+(i)}
+                    </div>
+                </div>`)
+           
            }
         }
 		function preview(){
