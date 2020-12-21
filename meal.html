@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐票</title>
+    <script src="./js/jquery-1.7.2.min.js"></script>
+</head>
+<style>
+    html,body{
+        padding: 0;
+        margin: 0;
+    }
+    /*横向*/
+.a4-endwise{
+      margin: 0 auto;
+      width: 1070px;
+      height: 100vh;
+      border: 1px #ccc solid;
+      overflow: hidden;
+      padding: 0;
+      word-break:break-all;
+}
+  /*纵向*/
+.a4-broadwise{
+      margin: 0 auto;
+      width: 1569px;
+      height: 1073px;
+      border: 1px #000 solid;
+      overflow: hidden;
+      padding: 0;
+      word-break:break-all;
+}
+  /*打印按钮*/
+.print{
+      position: fixed;
+      top: 1%;
+      left:10%;
+}
+.pring-input{
+    position: fixed;
+      top: 5%;
+      left:10%;
+}
+.container{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start
+}
+.item{
+  width: 50%;
+  height: 16.6%;
+  position: relative;
+}
+.item img{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+.item-text{
+    position: absolute;
+    z-index: 2;
+    bottom: 5%;
+    left: 5%;
+}
+input{
+    display: block;
+}
+</style>
+<body>
+        <a class="print" href="javascript:;" onclick="preview();">打印</a>
+        <div class="pring-input">
+            <input class="start"  placeholder="输入起始值" type="number">
+            <input class="end"  placeholder="输入结束值" type="number">
+            <button onclick="show();">确认</button>
+        </div>
+	<!--startprint-->
+		<div class="container a4-endwise" id="test">
+			<!-- <div class="item">
+                <img src="./img.png" alt="bg">
+                <div class="item-text">
+                    NO.00000001
+                </div>
+            </div> -->
+        </div>
+    <!--endprint-->
+    <script>
+		/**
+		 * [打印]
+		 * @return {[type]} [description]
+		 */
+        const old=window.document.body.innerHTML;
+        function show(){
+           let start= $('.start').val();
+           let end= $('.end').val();
+           window.document.body.innerHTML=old;
+           let pageIdx=0;
+           for(let i=start;i<=end;i++){
+               let num;
+               if(i<10){
+                num='NO.0000000'
+               }else if(i<100){
+                num='NO.000000'
+               }else{
+                num='NO.00000'
+               }
+               $('.container').eq(pageIdx).append(`
+               <div class="item">
+                <img src="./img.png" alt="bg">
+                <div class="item-text">
+                    ${num+(i)}
+                    </div>
+                </div>`)
+              if((i-start)>=12&&(i-start)%12==0){
+                $('.container').eq(pageIdx).after(`
+                <div class="container a4-endwise" id="test">
+                </div>
+                `)
+                pageIdx++
+              }
+           }
+        }
+		function preview(){
+			//获取当前页的html代码
+			bdhtml=window.document.body.innerHTML;
+			//设置打印开始区域
+			sprnstr="<!--startprint-->";
+			//设置打印结束区域
+			eprnstr="<!--endprint-->";
+			 //从开始代码向后取html
+			prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18);
+			//从结束代码向前取html
+			prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+			window.document.body.innerHTML=prnhtml;
+			window.print();
+			window.document.body.innerHTML=bdhtml;
+		}
+    </script>
+    
+</body>
+</html>
