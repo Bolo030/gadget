@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  padding: 30px;
+  display: flex;
+  flex-flow: nowrap column;
+  align-items: center;
+}
+
+#home {
+  position: relative;
+  box-sizing: border-box;
+  page-break-inside: avoid;
+}
+
+#badge-bg {
+  display: block;
+  height: 530px;
+  width: 360px;
+}
+
+/*.btn {*/
+/*  height: 40px;*/
+/*  padding: 0 10px;*/
+/*  margin: 30px;*/
+/*  background-color: #3c9bd6;*/
+/*  border: 0;*/
+/*  color: white;*/
+/*  border-radius: 5px;*/
+/*}*/
+
+.home-box {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0.6% 3% 0.7% 2.5%;
+  box-sizing: border-box;
+}
+
+.group {
+  width: 50%;
+  height: 50%;
+  display: flex;
+}
+
+.item-info {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding: 26% 0 15%;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.item-info img {
+  /*height: 43%;*/
+  width: 35%;
+  background-color: #999999;
+  /*margin: 0 0 8% 33%;*/
+}
+
+.item-input-row {
+  display: flex;
+  width: 56%;
+  margin: 5% 0;
+  margin-left: 18%;
+  height: 8%;
+}
+
+.item-input-row .item--label, .item-input-row .item--value {
+  display: flex;
+  align-items: center;
+}
+
+.item-input-row .item--label {
+  margin-right: 5%;
+  flex-shrink: 0;
+}
+
+.item-input-row .item--value {
+  border: none;
+  background: none;
+  outline: none;
+  width: 100%;
+  border-bottom: 1px solid #000000;
+  font-size: 18px;
+  padding-left: 15%;
+  box-sizing: border-box;
+  text-align: left;
+}

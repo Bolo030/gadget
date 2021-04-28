@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>电子工牌</title>
+    <link rel="stylesheet" href="/theme/default/all.css">
+    <link rel="stylesheet" href="./css/electronic.css?v=1.0" />
+    <script src="./js/html2Canvas.js"></script>
+    <script src="/js/all.js"></script>
+    <script src="/js/shopCommon/FormElement.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <button class="btn btn-primary" style="margin-bottom: 20px;" onclick="downloadBadge()">下载电子工牌</button>
+      <div id="home">
+        <img id="badge-bg" src="./img/badge-bg.png" />
+        <div class="home-box" id="home-box">
+          <div class="item-info">
+            <img id="avatar"/>
+            <div class="item-input-row">
+              <div class="item--label">姓名</div>
+              <div class="item--value" id="name"></div>
+            </div>
+            <div class="item-input-row">
+              <div class="item--label">部门</div>
+              <div class="item--value" id="branch"></div>
+            </div>
+            <div class="item-input-row">
+              <div class="item--label">职位</div>
+              <div class="item--value" id="role"></div>
+            </div>
+            <div class="item-input-row">
+              <div class="item--label">编号</div>
+              <div class="item--value" id="account"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  var v = {
+    currentUser: {
+      backtoken: ''
+    }
+  };
+  // 生成电子工牌截图
+  function downloadBadge() {
+    html2canvas(document.querySelector("#home"), {
+      allowTaint: true,
+      useCORS: true
+    }).then((canvas) => {
+      var alink = document.createElement("a");
+      alink.href = canvas.toDataURL();
+      alink.download = '电子工牌.png';
+      alink.click();
+    });
+  }
+
+  $(document).ready(function () {
+    let formElement = new FormElement();
+    let id = $('.avatar.avatar-user', window.parent.document).attr('data-id');
+    if (formElement.isEmpty(id)) {
+      formElement.danger('获取信息失败，请重新从菜单栏打开页面');
+    } else {
+      formElement.get('/backstage/admin/electronic/'+id).then((res) => {
+        if (res.status === 1) {
+          let user = res.data.user;
+          $('#avatar').attr('src', user.avatar);
+          $('#name').text(user.realname);
+          $('#branch').text(user.branch);
+          $('#role').text(user.role);
+          $('#account').text(user.account);
+        } else {
+          formElement.danger(res.message);
+        }
+      }).catch(() => {
+        formElement.danger('获取信息失败，请重新从菜单栏打开页面');
+      });
+    }
+  });
+</script>

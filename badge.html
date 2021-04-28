@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工牌</title>
+    <script src="./js/jquery-1.7.2.min.js"></script>
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    /*横向*/
+    .a4-endwise {
+      margin: 0 auto;
+      /* width: 1070px; */
+      width: 1070px;
+      height: 1511px;
+      border: 1px #ccc solid;
+      overflow: hidden;
+      padding: 0;
+      word-break: break-all;
+    }
+    /*纵向*/
+    .a4-broadwise {
+      margin: 0 auto;
+      width: 1569px;
+      height: 1073px;
+      border: 1px #000 solid;
+      overflow: hidden;
+      padding: 0;
+      word-break: break-all;
+    }
+    /*打印按钮*/
+    .print {
+      background: #fff !important;
+      color: #e5701b !important;
+    }
+    .pring-input {
+      position: fixed;
+      top: 5%;
+      left: 5%;
+      z-index: 6666;
+    }
+    .container {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 90px 105px;
+      box-sizing: border-box;
+    
+    }
+    .item {
+      position: relative;
+      width: 276px;
+      background-color: #f4f4f4;
+      margin: 2px;
+      border:1px solid #f4f4f4;
+    }
+    .head,
+    .foot {
+      height: 216.5px;
+      width: 100%;
+      position: relative;
+    }
+    .bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      background-color: #fefefe;
+    }
+    .head .head-logo {
+      position: absolute;
+      z-index: 66;
+      font-size: 14px;
+      font-weight: 700;
+      top: 20px;
+      left:20px;
+      color: #e5701b;
+    }
+    .head .head-logo img {
+      height: 26px;
+      width: 65px;
+    }
+    .foot .foot-info {
+      color: #fff;
+      position: absolute;
+      top: 35px;
+      left: 21px;
+      z-index: 66;
+    }
+    .foot-info .name {
+      font-size: 35px;
+      line-height: 35px;
+    }
+    .foot-info .sub-name {
+      font-size: 15px;
+      line-height: 5px;
+      margin-bottom: 12px;
+      margin-top: 8.5px;
+    }
+    .foot-info .sub-name span:first-of-type {
+      margin-right: 4px;
+    }
+    .foot-info .section span:first-of-type {
+      margin-right: 13px;
+    }
+    .foot-info .section {
+      font-size: 14px;
+      line-height: 14px;
+    }
+    input {
+      display: block;
+      margin-bottom: 8.5px;
+    }
+    .hint {
+      font-size: 12px;
+      color: #e5701b;
+    }
+    p {
+      margin: 8.5px 0;
+      font-size: 12px;
+    }
+    .btn {
+      text-decoration: none;
+      color: #000000;
+      font-size: 12px;
+      border: 1px solid #e5701b;
+      background-color: #e5701b;
+      padding: 3.5px 8.5px;
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+  </style>
+  <body>
+    <div class="pring-input">
+      <!-- <p><span>序号：</span><sapn class="number-idx">0</sapn></p> -->
+      <input class="code" placeholder="工号" />
+      <input
+        class="upload"
+        name="file"
+        onchange="imgChange(this)"
+        accept="image/*"
+        type="file"
+      />
+      <input class="name" placeholder="姓名" />
+      <input class="xing" placeholder="姓拼音" />
+      <input class="ming" placeholder="名拼音" />
+      <input class="section" placeholder="部门" />
+      <input class="station" placeholder="岗位" />
+      <button class="btn" onclick="show()">新建</button>
+      <button class="btn" onclick="edit()">编辑</button>
+      <button class="btn" onclick="clearOne()">删除</button>
+      <!-- <button class="btn" onclick="clearAll()">清空</button> -->
+      <a class="btn print" href="javascript:;" onclick="preview();">打印</a>
+      <div class="hint">
+        <p>1、布局选纵向</p>
+        <p>2、纸张A4，边距选无</p>
+        <p>3、勾选背景图片</p>
+      </div>
+    </div>
+    <!--startprint-->
+    <div class="container a4-endwise" id="test"></div>
+    <!--endprint-->
+    <script>
+      /**
+       * [打印]
+       * @return {[type]} [description]
+       */
+
+      const old = window.document.body.innerHTML;
+      var list = [];
+      var data = {
+        code: "",
+        upload: "",
+        name: "",
+        xing: "",
+        ming: "",
+        section: "",
+        station: ""
+      };
+      var index = 0;
+      var chooseIdx = 0;
+      var pageIdx = 0;
+      var imgUrl = "";
+      function imgChange(img) {
+        var reader = new FileReader();
+        reader.readAsDataURL(img.files[0]);
+        reader.onload = function (e) {
+          imgUrl = e.target.result;
+        };
+      }
+      function show() {
+        console.log(list.length,'list.lengthlist.length')
+        if(list.length>=9){
+          var r=confirm("点击'确认'会删除之前填写的内容哦！开始新的一页");
+          if (r == true) {
+            clearAll()
+          }else{
+            return
+          } 
+        }
+        // $(".number-idx").text(index);
+        list.push({ ...data });
+        list[index].code = $(".code").val();
+        list[index].name = $(".name").val();
+        list[index].xing = $(".xing").val();
+        list[index].ming = $(".ming").val();
+        list[index].upload = imgUrl;
+        list[index].section = $(".section").val();
+        list[index].station = $(".station").val();
+        index++;
+        draw();
+      }
+      function choose(i) {
+         chooseIdx = i; 
+         $(".code").val(list[chooseIdx].code);
+         $(".name").val(list[chooseIdx].name);
+         $(".xing").val(list[chooseIdx].xing);
+         $(".ming").val(list[chooseIdx].ming);
+         imgUrl = list[chooseIdx].upload;
+         $(".section").val(list[chooseIdx].section);
+         $(".station").val(list[chooseIdx].station);
+        // $(".number-idx").text(i);
+      }
+      function edit() {
+        list[chooseIdx].code = $(".code").val();
+        list[chooseIdx].name = $(".name").val();
+        list[chooseIdx].xing = $(".xing").val();
+        list[chooseIdx].ming = $(".ming").val();
+        list[chooseIdx].upload = imgUrl;
+        list[chooseIdx].section = $(".section").val();
+        list[chooseIdx].station = $(".station").val();
+        draw();
+      }
+      function clearOne() {
+        list.splice(chooseIdx,1)
+        index--;
+        draw();
+      }
+      function draw() {
+        $(".container").empty();
+        for (let i in list) {
+          $(".container").append(`
+          <div class="item" onclick="choose(${i})">
+        <div class="head">
+          <img src="${list[i].upload}" class="bg" />
+          <div class="head-logo">
+            <img src="./img/logo.jpg" alt="" />
+            <p>NO.${list[i].code}</p>
+          </div>
+        </div>
+        <div class="foot">
+          <img src="./img/icon-foot1.jpg" class="bg" />
+          <div class="foot-info">
+            <div class="name">${list[i].name}</div>
+            <div class="sub-name"><span>${list[i].xing}</span><span>${list[i].ming}</span></div>
+            <div class="section"><span>${list[i].section}</span><span>${list[i].station}</span></div>
+          </div>
+        </div>
+      </div> 
+          `);
+        }
+      }
+      function preview() {
+        //获取当前页的html代码
+        bdhtml = window.document.body.innerHTML;
+        //设置打印开始区域
+        sprnstr = "<!--startprint-->";
+        //设置打印结束区域
+        eprnstr = "<!--endprint-->";
+        //从开始代码向后取html
+        prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18);
+        //从结束代码向前取html
+        prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+        window.document.body.innerHTML = prnhtml;
+        window.print();
+        window.document.body.innerHTML = bdhtml;
+      }
+      function clearAll() {
+        $("#test").empty();
+        list = [];
+        index = 0;
+        console.log(list);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+body {
+    background: #eee;
+}
+.img-wrapper {
+    display: flex;
+    width: 750px;
+    margin: 0 auto;
+    background: #fff;
+}
+.poster-box {
+    position: relative;
+    width: 375px;
+    height: 667px;
+    margin: 0 auto;
+    text-align: center;
+    background:
+        url("../img/bg_collection@2x (1).png") no-repeat center;
+}
+
+.poster-box .poster-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 315px;
+    height: 445px;
+    background: #f3f7ff;
+}
+
+.poster-box .poster-wrapper h3 {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.poster-box .poster-wrapper .order {
+    border: 1px solid #ccc;
+    color: #9999;
+    width: 200px;
+    height: 20px;
+    margin: 0 auto;
+    padding: 0 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.poster-box .poster-wrapper .money {
+    color: #e64c16;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 70px;
+
+}
+
+.poster-box .poster-wrapper .money span:nth-of-type(2) {
+    font-weight: 500;
+    font-size: 25px;
+}
+img {
+    width: 237px;
+    height: 237px;
+}
+
+.input-content {
+    width: 375px;
+    height: 667px;
+    background: #fff;
+    text-align: center;
+    padding-top: 100px;
+    box-sizing: border-box;
+   
+}
+input {
+    width: 260px;
+    height: 40px;
+    border-radius: 8px;
+    outline: none;
+    padding-left: 10px;
+    box-sizing: border-box;
+    border: 1px solid #427deb ;
+}
+button {
+    padding: 10px 15px;
+    outline: none;
+    background: #427deb;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-content .input-wrapper .storeorder {
+    margin: 20px 0;
+}
+.input-content .input-wrapper .storemoney {
+    margin-bottom: 20px;
+}
+
+

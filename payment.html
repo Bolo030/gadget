@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/payment.css">
+</head>
+
+<body>
+    <div class="img-wrapper">
+        
+        <div class="input-content">
+            <div class="input-wrapper">
+                <div class="storeName">
+                    <label for="storeName">店名：</label>
+                    <input type="text" name="" id="storeName" placeholder="请输入店铺名称">
+                </div>
+                <div class="storeorder">
+                    <label for="storeorder">编号：</label>
+                    <input type="text" name="" id="storeorder" placeholder="请输入订单编号">
+                </div>
+                <div class="storemoney">
+                    <label for="storemoney">金额：</label>
+                    <input type="text" name="" id="storemoney" placeholder="请输入金额">
+                </div>
+                <div>
+                    <button id="creatImg">生成图片</button>
+                    <button id="downloadImg">下载图片</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="poster-box" id="poster-box" >
+            <div class="poster-wrapper">
+                <h3>店铺名称</h3>
+                <div class="order">订单号：----</div>
+                <div class="money">
+                    <span>应付￥</span>
+                    <span class="orderMoney">0</span>
+                    <span>.00</span>
+                </div>
+                <div><img width="237" height="237" src="./img/paymentqrcode.png" alt=""></div>
+                <p>成都九九牛君尚科技有限公司</p>
+            </div>
+        </div>
+    </div>
+    <script src="./js/html2Canvas.js"></script>
+    <script src="./js/payment.js"></script>
+</body>
+
+</html>

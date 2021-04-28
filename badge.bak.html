@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工牌打印</title>
+    <link rel="stylesheet" href="/theme/default/all.css">
+<!--    <link rel="stylesheet" href="/theme/zui/css/min.css">-->
+    <script src="/js/all.js"></script>
+    <script src="/js/shopCommon/FormElement.js"></script>
+    <link rel="stylesheet" href="./css/badge.css?v=1.0" />
+  </head>
+  <body>
+    <div>
+      <div class="px-40">
+        <table class="table table-form" style="width: 1100px;">
+          <tr>
+            <th class="w-90px">员工账号</th>
+            <td>
+              <select name="admin" id="admin" class="form-control chosen" multiple>
+              </select>
+            </td>
+            <th>批量修改职位</th>
+            <td>
+              <input type="text" name="roleName" id="roleName" class="form-control" />
+            </td>
+            <th>
+              <div class="btn-group">
+                <button onclick="sure()" class="btn btn-primary">确定</button>
+                <button onclick="doPrint()" class="btn">打印</button>
+              </div>
+            </th>
+          </tr>
+        </table>
+      </div>
+      <ul class="hint">
+        <li>1、页码设为 1</li>
+        <li>2、布局设为横向</li>
+        <li>3、边距设为无</li>
+      </ul>
+      <div class="home">
+        <img src="./img/1.png" />
+        <div class="home-box" id="home-box">
+          <!--<div class="group">
+          <div class="item">
+              <div class="item-info">
+                <img src="" />
+                <div class="item-input-row">
+                  <div class="label">姓名</div>
+                  <div class="value">{{ item.name }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">部门</div>
+                  <div class="value">{{ item.department }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">职位</div>
+                  <div class="value">{{ item.post }}</div>
+                </div>
+                <div class="item-input-row">
+                  <div class="label">编号</div>
+                  <div class="value">{{ item.number }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="item"></div> 
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  var v = {
+    currentUser: {
+      backtoken: ''
+    }
+  };
+  var formElement = new FormElement();
+  window.onload = () => {
+    var group = document.querySelector("group");
+  };
+  function doPrint() {
+    var newHtml = document.querySelector(".home").innerHTML;
+    window.document.body.innerHTML = newHtml;
+    window.print();
+    window.location.reload();
+  }
+  function init() {
+    formElement.get('/backstage/admin/select').then((res) => {
+      if (res.status === 1) {
+        $('#admin').html(res.data.html);
+        $('#admin').trigger('chosen:updated');
+      } else {
+        formElement.danger('获取员工账号失败');
+      }
+    });
+  }
+  function sure() {
+    let admin = $('#admin').val();
+    if (formElement.isEmpty(admin)) {
+      formElement.danger('请选择员工');
+      return false;
+    }
+    if (admin.length > 5) {
+      formElement.danger('最多只能选择4位员工');
+      return false;
+    }
+    formElement.get('/backstage/admin/badge', {accounts: admin, html: 1}).then((res) => {
+      if (res.status === 1) {
+        $('#home-box').html(res.data.html);
+        let roleName = $('#roleName').val();
+        if (! formElement.isEmpty(roleName)) {
+          $('.badge-roleName').text(roleName);
+        }
+      } else {
+        formElement.danger(res.message);
+      }
+    });
+  }
+  $(document).ready(function () {
+    init();
+    $('#admin').change(function () {
+      let val = $(this).val();
+      if (val.length > 5) {
+        formElement.danger('最多只能选择4位员工');
+      }
+    });
+  });
+</script>
